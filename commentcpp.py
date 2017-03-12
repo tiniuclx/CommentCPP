@@ -34,3 +34,5 @@ ml_coms = ml_regex.finditer(contents)
 output = ml_regex.sub(r'/* Placeholder \n   multiline \n   comment \n */', contents)
 output = sl_regex.sub(r'//placeholder single-line comment', output)
 print(output)
+
+print('hello')
