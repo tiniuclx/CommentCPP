@@ -28,5 +28,3 @@ for line in sl_coms:
     print(line.group())
 for comment in ml_coms:
     print(comment.group())
-
-print('testcommit')
