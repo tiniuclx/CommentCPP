@@ -6,17 +6,24 @@ Created on 11 Mar 2017
 import argparse
 import re
 import tracery
+from tracery.modifiers import base_english
 
 
-def gen_sl_comment():
+def gen_sl_comment(match):
     """Procedurally generates a single-line comment, different for every call.
     """
-    # TODO: Implement this
-    string = r'// Placeholder single-line comment'
-    return string
+
+    rules = {
+        'object': ['function', 'argument', 'parameter', 'class', 'instance'],
+        'act': ['overload', 'inherit', 'parse', 'modify'],
+        'origin': 'The #object# is #act.ed# by the #object#.'
+    }
+    grammar = tracery.Grammar(rules)
+    grammar.add_modifiers(base_english)
+    return "// " + grammar.flatten('#origin#')
 
 
-def gen_ml_comment():
+def gen_ml_comment(match):
     """Procedurally generates a multi-line comment, different for every call.
     """
     # TODO: Implement this
@@ -52,6 +59,6 @@ ml_coms = ml_regex.finditer(contents)
 #     print(comment.group(1))
 # group() returns the whole match, group(1) returns only the comments
 
-output = ml_regex.sub(gen_ml_comment(), contents)
-output = sl_regex.sub(gen_sl_comment(), output)
+output = ml_regex.sub(gen_ml_comment, contents)
+output = sl_regex.sub(gen_sl_comment, output)
 print(output)
