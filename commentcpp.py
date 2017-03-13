@@ -1,4 +1,4 @@
-r"""Adds unhelpful comments to C++ files.
+r"""Makes & adds unhelpful comments to C++ files.
 Created on 11 Mar 2017
 
 @author: Alexandru Valentin Tiniuc
@@ -12,13 +12,15 @@ def gen_sl_comment():
     """Procedurally generates a single-line comment, different for every call.
     """
     # TODO: Implement this
-    return r'// Placeholder single-line comment'
+    string = r'// Placeholder single-line comment'
+    return string
 
 
 def gen_ml_comment():
-    """Procedurally generates a multi-line comment, different for every call."""
+    """Procedurally generates a multi-line comment, different for every call.
+    """
     # TODO: Implement this
-    return r'/* Placeholder multi \n line comment */'
+    return r'/* Placeholder multi \n   line comment \n */'
 
 
 if __name__ == '__main__':
@@ -53,5 +55,3 @@ ml_coms = ml_regex.finditer(contents)
 output = ml_regex.sub(gen_ml_comment(), contents)
 output = sl_regex.sub(gen_sl_comment(), output)
 print(output)
-
-print('hello')
