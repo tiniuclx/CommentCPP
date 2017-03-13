@@ -53,3 +53,5 @@ ml_coms = ml_regex.finditer(contents)
 output = ml_regex.sub(gen_ml_comment(), contents)
 output = sl_regex.sub(gen_sl_comment(), output)
 print(output)
+
+print('hello')
