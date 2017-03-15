@@ -69,7 +69,7 @@ rules = {
     'compiler': ['gcc', 'g++', 'Apple C++', 'Cygwin', 'IBM C++',
                  'Microsoft Visual C++ Express', 'Oracle C++',
                  'my homebrew C++ interpreter', 'CPython', 'Visual C\\#', 'javac',
-                 'AVR GCC optimised for #object_attr.s#'],
+                 'AVR GCC optimised for #object_attr.s#', 'clang'],
     }
 
 
@@ -103,7 +103,8 @@ sl_regex = re.compile(r'//(.*)')
 # List of single line comment matches
 sl_coms = sl_regex.finditer(contents)
 # Multi-line comment regular expression
-ml_regex = re.compile(r'/\*(.*?)\*/', re.RegexFlag.DOTALL)
+# 16 is DOTALL regex flag
+ml_regex = re.compile(r'/\*(.*?)\*/', 16)
 # List of multi line comment matches
 ml_coms = ml_regex.finditer(contents)
 
