@@ -77,5 +77,11 @@ python commentcpp.py %PATH%
 ```
 Where %PATH% is the file you want to comment. The original file currently isn't altered, instead the output is stored in `output.cpp`.
 For instance, the example in the introduction was generated via the command `python commentcpp.py pictor.h`, with the terminal pointing at the git directory.
+
+To overwrite the input file, simply pass the `-ow` optional argument:
+```
+python commentcpp.py pictor.c -ow
+```
+
 ## Limitations
 Currently, the script replaces existing single-line comments with generated ones. It also replaces multi-line comments with a placeholder.

@@ -90,7 +90,8 @@ def gen_ml_comment(match):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('path', help='File to add comments to')
+    parser.add_argument('path', help='file to add comments to')
+    parser.add_argument('-ow','--overwrite',action='store_true', help='overwrite the input file')
     args = parser.parse_args()
     file = open(args.path)
     contents = file.read()
@@ -112,14 +113,13 @@ ml_coms = ml_regex.finditer(contents)
 # make regex that searches for start of line, followed by 0 or more whitespace
 # followed by non-whitespace character
 
-# for line in sl_coms:
-#     print(line.group())
-# for comment in ml_coms:
-#     print(comment.group(1))
-# group() returns the whole match, group(1) returns only the comments
-
 output = ml_regex.sub(gen_ml_comment, contents)
 output = sl_regex.sub(gen_sl_comment, output)
-with open('output.cpp', 'w') as f:
-    f.write(output)
-    f.close()
+if args.overwrite:
+    with open(args.path, 'w') as f:
+        f.write(output)
+        f.close()
+else:
+     with open('output.cpp', 'w') as f:
+        f.write(output)
+        f.close()
