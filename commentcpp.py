@@ -92,6 +92,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('path', help='file to add comments to')
     parser.add_argument('-ow','--overwrite',action='store_true', help='overwrite the input file')
+    parser.add_argument('-d','--destination', help='destination of output file')
     args = parser.parse_args()
     file = open(args.path)
     contents = file.read()
@@ -115,8 +116,16 @@ ml_coms = ml_regex.finditer(contents)
 
 output = ml_regex.sub(gen_ml_comment, contents)
 output = sl_regex.sub(gen_sl_comment, output)
+
+# repeated code, consider refactoring?
 if args.overwrite:
     with open(args.path, 'w') as f:
+        f.write(output)
+        f.close()
+elif args.destination:
+    # does not work with folders
+    # e.g. -d tests_folder/output2.cpp gives file not found error
+     with open(args.destination, 'w') as f:
         f.write(output)
         f.close()
 else:

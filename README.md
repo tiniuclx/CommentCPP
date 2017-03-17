@@ -82,6 +82,10 @@ To overwrite the input file, simply pass the `-ow` optional argument:
 ```
 python commentcpp.py pictor.c -ow
 ```
+You can also use the `-d` optional argument to give the output file a different destination (not fully implemented):
+```
+python commentcpp.py pictor.c -d pictor_modified.c
+```
 
 ## Limitations
 Currently, the script replaces existing single-line comments with generated ones. It also replaces multi-line comments with a placeholder.
