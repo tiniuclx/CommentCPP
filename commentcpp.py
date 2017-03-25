@@ -109,6 +109,8 @@ ml_regex = re.compile(r'/\*(.*?)\*/', 16)
 # List of multi line comment matches
 ml_coms = ml_regex.finditer(contents)
 
+# added a comment somewhere else
+
 # idea: to keep indentation consistent between code and inserted comment:
 # make regex that searches for start of line, followed by 0 or more whitespace
 # followed by non-whitespace character
