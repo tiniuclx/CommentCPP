@@ -43,18 +43,37 @@ class Commenter:
         self.source_code = self.ml_regex.sub(self.gen_ml_comment, self.source_code)
         self.source_code = self.sl_regex.sub(self.gen_sl_comment, self.source_code)
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('path', help='file to add comments to')
+    parser.add_argument('-ow', '--overwrite', action='store_true',
+                        help='overwrite the input file')
+    parser.add_argument('-d', '--destination', help='destination of output file')
+    args = parser.parse_args()
+    file = open(args.path)
 
-# Single-line comment regular expression
-sl_regex = re.compile(r'//(.*)')
-# List of single line comment matches
-sl_coms = sl_regex.finditer(contents)
-# Multi-line comment regular expression
-# 16 is DOTALL regex flag
-ml_regex = re.compile(r'/\*(.*?)\*/', 16)
-# List of multi line comment matches
-ml_coms = ml_regex.finditer(contents)
+    commenter = Commenter()
+    commenter.set_source(file.read())
+    file.close()
 
-# added a comment somewhere else
+    commenter.comment()
+
+    if args.overwrite:
+        with open(args.path, 'w') as f:
+            f.write(commenter.get_source())
+            f.close()
+    elif args.destination:
+        # does not work with folders
+        # e.g. -d tests_folder/output2.cpp gives file not found error
+         with open(args.destination, 'w') as f:
+            f.write(commenter.get_source())
+            f.close()
+    else:
+         with open('output.cpp', 'w') as f:
+            f.write(commenter.get_source())
+            f.close()
+else:
+    pass
 
 # idea: to keep indentation consistent between code and inserted comment:
 # make regex that searches for start of line, followed by 0 or more whitespace
@@ -65,24 +84,3 @@ ml_coms = ml_regex.finditer(contents)
 # CraftingInterpreters.com
 # using this parser, add contextually-sensitive comments (i.e. referring to specific
 # variables in the source file) to make everything extra-confusing!
-
-# change 1: hello melissa
-
-output = ml_regex.sub(gen_ml_comment, contents)
-output = sl_regex.sub(gen_sl_comment, output)
-
-# repeated code, consider refactoring?
-if args.overwrite:
-    with open(args.path, 'w') as f:
-        f.write(output)
-        f.close()
-elif args.destination:
-    # does not work with folders
-    # e.g. -d tests_folder/output2.cpp gives file not found error
-     with open(args.destination, 'w') as f:
-        f.write(output)
-        f.close()
-else:
-     with open('output.cpp', 'w') as f:
-        f.write(output)
-        f.close()
