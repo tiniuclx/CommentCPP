@@ -16,11 +16,22 @@ class Commenter:
         self.grammar = tracery.Grammar(dictionaries.std_CPP)
         self.grammar.add_modifiers(base_english)
         self.source_code = "Uninitialised source in instance of Commenter"
+        # Token for single line comments
+        self.sl_token = r'//'
+        # Tokens for multi-line comment regexp
+        self.ml_token_start_regex = r'/\*'
+        self.ml_token_end_regex = r'\*/'
+        # Token for multi-line comment used for textual replacement
+        # Two different comment tokens are needed because the regex
+        #
+        self.ml_token_start = r'/*'
+        self.ml_token_end = r'*/'
         # Single-line comment regular expression
-        self.sl_regex = re.compile(r'//(.*)')
+        self.sl_regex = re.compile(self.sl_token + r'(.*)')
         # Multi-line comment regular expression
         # 16 is DOTALL regex flag
-        self.ml_regex = re.compile(r'/\*(.*?)\*/', 16)
+        self.ml_regex = re.compile(self.ml_token_start_regex + r'(.*?)'
+                                   + self.ml_token_end_regex, 16)
 
     def set_source(self, input_code):
         self.source_code = input_code
@@ -31,13 +42,14 @@ class Commenter:
     def gen_sl_comment(self, match):  # match argument yet unused
         """Procedurally generates a single-line comment, different for every call.
         """
-        return "// " + self.grammar.flatten('#origin#')
+        return self.sl_token + " " + self.grammar.flatten('#origin#')
 
     def gen_ml_comment(self, match):  # match argument yet unused
         """Procedurally generates a multi-line comment, different for every call.
         """
         # TODO: Implement this
-        return '/* Placeholder multi \n   line comment \n */'
+        return (self.ml_token_start + ' Placeholder multi \n   line comment \n '
+                + self.ml_token_end)
 
     def comment(self):
         self.source_code = self.ml_regex.sub(self.gen_ml_comment, self.source_code)
