@@ -23,7 +23,10 @@ class Commenter:
         self.ml_token_end_regex = r'\*/'
         # Token for multi-line comment used for textual replacement
         # Two different comment tokens are needed because the regex
+        # is different from the actual comment syntax
         #
+        # Edge case: what happens in languages with only one comment style?
+        # e.g. Python does not have multi-line comments
         self.ml_token_start = r'/*'
         self.ml_token_end = r'*/'
         # Single-line comment regular expression
@@ -96,3 +99,7 @@ else:
 # CraftingInterpreters.com
 # using this parser, add contextually-sensitive comments (i.e. referring to specific
 # variables in the source file) to make everything extra-confusing!
+
+# instead of using enumerated type to store parsed information, consider using a
+# dictionary where the key is the type of information (e.g. IF_STATEMENT, FUNCTION,
+# VARIABLE), and the value is a list of objects corresponding to each type
