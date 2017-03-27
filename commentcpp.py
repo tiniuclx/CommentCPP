@@ -10,30 +10,38 @@ from tracery.modifiers import base_english
 import dictionaries
 
 
-def gen_sl_comment(match):
-    """Procedurally generates a single-line comment, different for every call.
-    """
-    grammar = tracery.Grammar(rules)
-    grammar.add_modifiers(base_english)
-    return "// " + grammar.flatten('#origin#')
+class Commenter:
+    """Comments your code according to the rules given."""
+    def __init__(self):
+        self.grammar = tracery.Grammar(dictionaries.std_CPP)
+        self.grammar.add_modifiers(base_english)
+        self.source_code = "Uninitialised source in instance of Commenter"
+        # Single-line comment regular expression
+        self.sl_regex = re.compile(r'//(.*)')
+        # Multi-line comment regular expression
+        # 16 is DOTALL regex flag
+        self.ml_regex = re.compile(r'/\*(.*?)\*/', 16)
 
+    def set_source(self, input_code):
+        self.source_code = input_code
 
-def gen_ml_comment(match):
-    """Procedurally generates a multi-line comment, different for every call.
-    """
-    # TODO: Implement this
-    return '/* Placeholder multi \n   line comment \n */'
+    def get_source(self):
+        return self.source_code
 
+    def gen_sl_comment(self, match):  # match argument yet unused
+        """Procedurally generates a single-line comment, different for every call.
+        """
+        return "// " + self.grammar.flatten('#origin#')
 
+    def gen_ml_comment(self, match):  # match argument yet unused
+        """Procedurally generates a multi-line comment, different for every call.
+        """
+        # TODO: Implement this
+        return '/* Placeholder multi \n   line comment \n */'
 
-parser = argparse.ArgumentParser()
-parser.add_argument('path', help='file to add comments to')
-parser.add_argument('-ow','--overwrite',action='store_true', help='overwrite the input file')
-parser.add_argument('-d','--destination', help='destination of output file')
-args = parser.parse_args()
-file = open(args.path)
-contents = file.read()
-file.close()
+    def comment(self):
+        self.source_code = self.ml_regex.sub(self.gen_ml_comment, self.source_code)
+        self.source_code = self.sl_regex.sub(self.gen_sl_comment, self.source_code)
 
 
 # Single-line comment regular expression
