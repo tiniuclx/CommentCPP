@@ -80,11 +80,11 @@ if __name__ == "__main__":
     elif args.destination:
         # does not work with folders
         # e.g. -d tests_folder/output2.cpp gives file not found error
-         with open(args.destination, 'w') as f:
+        with open(args.destination, 'w') as f:
             f.write(commenter.get_source())
             f.close()
     else:
-         with open('output.cpp', 'w') as f:
+        with open('output.cpp', 'w') as f:
             f.write(commenter.get_source())
             f.close()
 else:
